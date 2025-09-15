@@ -130,6 +130,136 @@ Then `.\ZoomIt.exe | findstr /i .pdb`
 
 <img width="851" height="451" alt="Screenshot 2025-09-09 145143" src="https://github.com/user-attachments/assets/d1e2d497-fed1-4b5b-8afc-a0e9af90f1d5" />
 
+# Windows Event Logs
+
+**24. What is the Event ID for the earliest recorded event?**
+
+First I go to the folder location given. Then sort from latest to earliest.
+
+<img width="1193" height="172" alt="Screenshot 2025-09-15 115302" src="https://github.com/user-attachments/assets/a3469e10-0990-42e2-864b-9a1af9bcd7b9" />
+
+**25. Filter on Event ID 4104. What was the 2nd command executed in the PowerShell session?**
+
+First I set a filter.
+
+<img width="815" height="823" alt="Screenshot 2025-09-15 115350" src="https://github.com/user-attachments/assets/9397576a-46a9-424f-99b7-9841c6911883" />
+
+Go to the second entry.
+
+![1_oxpEgeLgRENDjezrANr1PQ](https://github.com/user-attachments/assets/13e8af19-2328-4ea4-9ed4-087ec80fe029)
+
+**26. What is the Task Category for Event ID 4104?**
+
+Answer provided from same screen.
+
+<img width="891" height="477" alt="Screenshot 2025-09-15 120125" src="https://github.com/user-attachments/assets/7d558722-abc3-46c3-ba19-2c1a8cfeb5b0" />
+
+**27. Analyze the Windows PowerShell log. What is the Task Category for Event ID 800?**
+
+First I head to the new location of the files. Go to Windows Powershell under OpenSSH.
+
+<img width="286" height="108" alt="Screenshot 2025-09-15 120325" src="https://github.com/user-attachments/assets/325058f3-cde3-4f20-a2f2-ca4f964b19f8" />
+
+Then filter EventID 800
+
+<img width="805" height="826" alt="Screenshot 2025-09-15 120438" src="https://github.com/user-attachments/assets/7672c447-e974-4550-b7e0-22c2cdd3a8b2" />
+
+Then I can find the answer looking at an entry.
+
+<img width="837" height="481" alt="Screenshot 2025-09-15 120550" src="https://github.com/user-attachments/assets/c164a45e-55ed-4006-a873-d786016bf7f9" />
+
+**28. How many log names are in the machine?**
+
+`wevtutil el | Measure-Objects`
+
+el supplies all log names, and Measure Objects just counts the total. For some reason my answer was 1 less than the output.
+
+<img width="654" height="257" alt="Screenshot 2025-09-15 121007" src="https://github.com/user-attachments/assets/80239c16-27e4-4e3b-90c2-ff4c066bda92" />
+
+**29. What event files would be read when using the query-events command?**
+
+<img width="945" height="102" alt="Screenshot 2025-09-15 121311" src="https://github.com/user-attachments/assets/97e3c0df-4950-40ad-99d4-481cedefeabb" />
+
+**30. What option would you use to provide a path to a log file?**
+
+Looking through the options I foud the answer by using `wevtutil qe /?`
+
+<img width="860" height="450" alt="Screenshot 2025-09-15 122056" src="https://github.com/user-attachments/assets/c49b6e26-72c6-4c96-86c7-1695aa58fe12" />
+
+**31. What is the VALUE for /q?**
+
+From that same search I can find the answer with the output.
+
+<img width="897" height="102" alt="Screenshot 2025-09-15 122216" src="https://github.com/user-attachments/assets/2db25430-3f8d-404e-885d-5feaeb27c104" />
+
+**32. What is the log name?**
+
+<img width="372" height="107" alt="Screenshot 2025-09-15 122503" src="https://github.com/user-attachments/assets/727f3aab-1edc-4715-a213-11fd26f28694" />
+
+**33. What is the /rd option for?**
+
+I can find the answer from the output of 30.
+
+<img width="831" height="65" alt="Screenshot 2025-09-15 122604" src="https://github.com/user-attachments/assets/197c1c4c-c31d-4f05-b300-4ab096ecd3d6" />
+
+**34. What is the /c option for?**
+
+Same thing I can get output from 30.
+
+<img width="382" height="63" alt="Screenshot 2025-09-15 122717" src="https://github.com/user-attachments/assets/f6559ec8-add3-4a58-8b25-310ca5d3cf4f" />
+
+**35. Execute the command from Example 1 (as is). What are the names of the logs related to OpenSSH?**
+
+`Get-WinEvent -ListLog *`
+
+Then scroll down to find entries with Open SSH.
+
+<img width="676" height="54" alt="Screenshot 2025-09-15 124045" src="https://github.com/user-attachments/assets/67a03d5e-8554-4834-bed4-2ff0f6e53973" />
+
+**36. Execute the command from Example 8. Instead of the string *Policy* search for *PowerShell*. What is the name of the 3rd log provider?**
+
+`Get-WinEvent -ListProvider *PowerShell*`
+
+And its the 3rd name.
+
+<img width="1061" height="525" alt="Screenshot 2025-09-15 124333" src="https://github.com/user-attachments/assets/65061641-1bde-464b-86e6-8438eddfc82b" />
+
+**37. Execute the command from Example 9. Use Microsoft-Windows-PowerShell as the log provider. How many event ids are displayed for this event provider?**
+
+`(Get-WinEvent -ListProvider Microsoft-Windows-PowerShell).Events | Format-Table Id, Description | Measure-Object`
+
+<img width="1277" height="242" alt="Screenshot 2025-09-15 124708" src="https://github.com/user-attachments/assets/47751d10-b5ec-4061-86a8-78f6202e6ceb" />
+
+**38. How do you specify the number of events to display?**
+
+Looking at the site provided I was able to find this.
+
+<img width="849" height="139" alt="Screenshot 2025-09-15 124813" src="https://github.com/user-attachments/assets/fc896bd7-1612-4d6a-b11c-b2ddc2c86694" />
+
+`-MaxEvents`
+
+**39. When using the FilterHashtable parameter and filtering by level, what is the value for Informational?**
+
+After doing some research I found this site and scrolled down to find the answer.
+
+https://learn.microsoft.com/en-us/powershell/scripting/samples/creating-get-winevent-queries-with-filterhashtable?view=powershell-7.5&viewFallbackFrom=powershell-7.3
+
+<img width="889" height="415" alt="Screenshot 2025-09-15 124949" src="https://github.com/user-attachments/assets/08495991-256e-4b57-b824-1a48375ac663" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

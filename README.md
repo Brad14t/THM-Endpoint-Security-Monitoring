@@ -1,6 +1,8 @@
 # THM-Endpoint-Security-Monitoring
 This will be my process through answering the Try Hack Me Endpoint Security Monitoring modules.
 
+`54 Total questions`
+
 **1. What is the normal parent process of services.exe?**
 
 `wininit.exe`
@@ -246,14 +248,101 @@ https://learn.microsoft.com/en-us/powershell/scripting/samples/creating-get-wine
 
 <img width="889" height="415" alt="Screenshot 2025-09-15 124949" src="https://github.com/user-attachments/assets/08495991-256e-4b57-b824-1a48375ac663" />
 
+**40. Using the knowledge gained on Get-WinEvent and XPath, what is the query to find WLMS events with a System Time of 2020-12-15T01:09:08.940277500Z?**
 
+To start answering this question I had to break down each part of the query and see what each part does.
 
+I start with needing to use the Application event logs `Get-WinEvent -LogName Application`
 
+Next I need the XPath query to filter `-FilterXPath`
 
+Then I just want the system provider name that matches WLMS `'*/System/Provider[@Name="WLMS"]`
 
+Then I just need to match the time that was given `and */System/TimeCreated[@SystemTime="2020-12-15T01:09:08.940277500Z"]'`
 
+Full query:
 
+`Get-WinEvent -LogName Application -FilterXPath '*/System/Provider[@Name="WLMS"] and */System/TimeCreated[@SystemTime="2020-12-15T01:09:08.940277500Z"]'`
 
+**41. Using Get-WinEvent and XPath, what is the query to find a user named Sam with an Logon Event ID of 4720?**
+
+After some trial and error, I used one of the queries provided and adjusted.
+
+`Get-WinEvent -LogName Security -FilterXPath '*/EventData/Data[@Name="TargetUserName"]="Sam" and */System/EventID=4720'`
+
+**42. Based on the previous query, how many results are returned?**
+
+Based on the last one, I can see there are 2 entries.
+
+<img width="1082" height="294" alt="Screenshot 2025-09-18 110407" src="https://github.com/user-attachments/assets/ddacf885-a4b0-4dd7-b136-ef2c54145e0c" />
+
+**43. Based on the output from the question #2, what is Message?**
+
+Just copy and paste the message from the query.
+
+**44. Still working with Sam as the user, what time was Event ID 4724 recorded? (MM/DD/YYYY H:MM:SS [AM/PM])**
+
+I can just change the query from before changing just the EventID from 4720 to 4724
+
+<img width="1054" height="234" alt="Screenshot 2025-09-18 111028" src="https://github.com/user-attachments/assets/17ac9f28-0af0-4d64-b383-15c01dbec575" />
+
+**45. What is the Provider Name?**
+
+We can see this from the output from the lst question.
+
+**46. What event ID is to detect a PowerShell downgrade attack?**
+
+How you can tell if there is a powershell downgrade, you can filter event ID for 400, then look at the `Engine Version` if below 5.0 shows sighn of downgrade attack.
+
+<img width="543" height="289" alt="Screenshot 2025-09-18 112730" src="https://github.com/user-attachments/assets/16d12b59-6e5f-4678-be99-339b8e8de0d1" />
+
+**47. What is the Date and Time this attack took place? (MM/DD/YYYY H:MM:SS [AM/PM])**
+
+Looking through Event ID 400 entries, I can see the first one is the attack because I can compair the Engine Version. I will provide an example of one of the other entries and what it should look like.
+
+<img width="812" height="298" alt="Screenshot 2025-09-18 113058" src="https://github.com/user-attachments/assets/1d426f63-9819-4339-9377-c36a96509e48" />
+
+**48. A Log clear event was recorded. What is the 'Event Record ID'?**
+
+Doing some research I found its suggested to start with Event ID 1102, but there is no set ID for log clears. But after going through a couple ID's I found 1 entry for Event ID `104` and read the description saying it was the log clear entry.
+
+<img width="944" height="636" alt="Screenshot 2025-09-18 113535" src="https://github.com/user-attachments/assets/ee2bffdb-cb21-45d8-a742-c593847f3573" />
+
+<img width="464" height="316" alt="Screenshot 2025-09-18 113754" src="https://github.com/user-attachments/assets/b28b4659-21be-4bb2-8ee1-8ce7a75e723a" />
+
+**49. What is the name of the computer?**
+
+Scrolling through the details I can find this.
+
+<img width="649" height="489" alt="Screenshot 2025-09-18 113931" src="https://github.com/user-attachments/assets/a60b405a-0bb3-4a9d-a627-5b6fc3148503" />
+
+**50. What is the name of the first variable within the PowerShell command?**
+
+So after reading the hint, I tried CML query. But that didnt work so I looked up the Event ID for raw Powershell script and found `4104` then I filtered to that ID. Then just went to the oldest entry and found the answer within ther details.
+
+**51. What is the Date and Time this attack took place? (MM/DD/YYYY H:MM:SS [AM/PM])**
+
+We can find this answer in the same page.
+
+<img width="767" height="360" alt="Screenshot 2025-09-18 115151" src="https://github.com/user-attachments/assets/8274ba02-2c77-4257-a3dd-2d3a0ee73758" />
+
+**52. What is the Execution Process ID?**
+
+To see this I used the XML tab.
+
+<img width="771" height="389" alt="Screenshot 2025-09-18 115338" src="https://github.com/user-attachments/assets/354f491d-3b39-4cbd-b1bb-5393737594be" />
+
+**53. What is the Group Security ID of the group she enumerated?**
+
+First I need an event ID, I researched that `4799` checks which user is in which group. So I filtered that, then clicked the first entry and looked for TargetSid value.
+
+<img width="602" height="398" alt="Screenshot 2025-09-18 115746" src="https://github.com/user-attachments/assets/5b2fb82a-76c6-4604-8edc-0138a9d667ff" />
+
+**54. What is the event ID?**
+
+Like I said the Event ID was `4799`
+
+<img width="1024" height="444" alt="Screenshot 2025-09-18 120053" src="https://github.com/user-attachments/assets/07b96223-28b8-422b-9481-c39fa6ab4125" />
 
 
 
